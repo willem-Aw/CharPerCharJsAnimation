@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CharReveal.js - Demo</title>
+<style>
+  :root {
+    --bg: #12141a;
+    --panel: #1b1e27;
+    --ink: #f2f1ec;
+    --muted: #8b8f9c;
+    --accent: #ff8a4c;
+    --accent2: #5cc8ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  header {
+    padding: 80px 24px 40px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  header h1 { font-size: 22px; margin: 0 0 8px; }
+  header p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  code { background: #0e1015; padding: 2px 6px; border-radius: 4px; color: var(--accent2); font-size: 12.5px; }
+
+  section.demo {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px;
+    border-top: 1px solid #262a35;
+  }
+  section.demo .tag {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .demo-text {
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .accent { color: var(--accent); }
+  footer { padding: 60px 24px 120px; text-align: center; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CharReveal.js</h1>
+  <p>
+    Scroll down: each block below animates character by character when it
+    enters the viewport, with a different <code>CharReveal</code> configuration
+    each time.
+  </p>
+</header>
+
+<section class="demo">
+  <div class="tag">trajectory: 'up' · order: 'normal' (défaut)</div>
+  <p class="demo-text" data-cr="fade-up">Each character appears one after another.</p>
+</section>
+
+<section class="demo">
+  <div class="tag">trajectory: 'bounce' · speed: 45 · order: 'center'</div>
+  <p class="demo-text" data-cr="bounce">It bounces outward from the center!</p>
+</section>
+
+<section class="demo">
+  <div class="tag">trajectory: 'blur' · split: 'words' · order: 'normal'</div>
+  <p class="demo-text" data-cr="blur-words">This example animates whole words, not characters.</p>
+</section>
+
+<section class="demo">
+  <div class="tag">trajectory: 'left' · order: 'reverse' · once: false (replays on every pass)</div>
+  <p class="demo-text" data-cr="replay">Scroll away and back to see me again.</p>
+</section>
+
+<section class="demo">
+  <div class="tag">trajectory: 'rotate' · order: 'random' · <span class="accent">onComplete</span> callback</div>
+  <p class="demo-text" data-cr="random">Random order, with a callback at the end.</p>
+</section>
+
+<footer>End of the demo - scroll back up to see everything again.</footer>
+
+<script src="char-reveal.js"></script>
+<script>
+  // One instance per configuration group. Each block is targeted through
+  // its data-cr attribute to keep the demo readable.
+
+  new CharReveal('[data-cr="fade-up"]', {
+    trajectory: 'up',
+    speed: 25,
+    duration: 450
+  });
+
+  new CharReveal('[data-cr="bounce"]', {
+    trajectory: 'bounce',
+    distance: 24,
+    speed: 45,
+    duration: 600,
+    order: 'center'
+  });
+
+  new CharReveal('[data-cr="blur-words"]', {
+    split: 'words',
+    trajectory: 'blur',
+    distance: 10,
+    speed: 90,
+    duration: 500
+  });
+
+  new CharReveal('[data-cr="replay"]', {
+    trajectory: 'left',
+    distance: 16,
+    speed: 20,
+    order: 'reverse',
+    once: false,        // reset and replay on every pass
+    threshold: 0.6
+  });
+
+  new CharReveal('[data-cr="random"]', {
+    trajectory: 'rotate',
+    distance: 18,
+    speed: 35,
+    order: 'random',
+    onComplete: function (el) {
+      el.style.textDecoration = 'underline';
+      el.style.textDecorationColor = '#5cc8ff';
+    }
+  });
+</script>
+</body>
+</html>
